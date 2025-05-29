@@ -2,7 +2,51 @@ open Yojson.Basic.Util
 
 exception InvalidParams of string
 exception InvalidArgs of string
+exception ExecError of string
 exception OptionHelp
+
+type transition = {
+  read: string;
+  to_state: string;
+  write: string;
+  action: string;
+}
+
+type machine = {
+  name: string;
+  alphabet: string list;
+  blank: string;
+  states: string list;
+  initial: string;
+  finals: string list;
+  transitions: (string * transition list) list;
+}
+
+let parse_transition json =
+  {
+    read = json |> member "read" |> to_string;
+    to_state = json |> member "to_state" |> to_string;
+    write = json |> member "write" |> to_string;
+    action = json |> member "action" |> to_string;
+  }
+
+let parse_transitions json =
+  json |> to_assoc
+       |> List.map (fun (state, list_json) ->
+            let transitions = list_json |> to_list |> List.map parse_transition in
+            (state, transitions)
+          )
+
+let create_machine json =
+  {
+    name = json |> member "name" |> to_string;
+    alphabet = json |> member "alphabet" |> to_list |> List.map to_string;
+    blank = json |> member "blank" |> to_string;
+    states = json |> member "states" |> to_list |> List.map to_string;
+    initial = json |> member "initial" |> to_string;
+    finals = json |> member "finals" |> to_list |> List.map to_string;
+    transitions = json |> member "transitions" |> parse_transitions;
+  }
 
 let validate_args json_path input =
   
@@ -15,10 +59,19 @@ let validate_args json_path input =
   let initial = json |> member "initial" |> to_string in
   let finals = json |> member "finals" |> to_list |> List.map to_string in
   
-  if (name = "" || blank = "" || initial = "" || Array.length alphabet = 0 || Array.length states = 0 || Array.length finals = 0) then
+  (* Fields aren't empty *)
+  if (name = "" || blank = "" || initial = "" || List.is_empty alphabet || List.is_empty states || List.is_empty finals) then
     raise (InvalidArgs "The machine should not have empty fields") else ();
-  if not String.contains alphabet blank.[0] then raise (InvalidArgs "The blank must be part of the alphabet") else ();
-  if String.contains input blank.[0] then raise (InvalidArgs "The input must not contains the blank sign") else ();
+  (* Blank is not part of the alphabet *)
+  if not (String.contains (String.concat "" alphabet) blank.[0]) then raise (InvalidArgs "The blank must be part of the alphabet") else ();
+  (* Input has only char from the alphabet *)
+  (* States must contains Initial and Finals *)
+  (* All fields exist or is a valid json *)
+  (* Transitions exists *)
+  (* All States (except finals) have a transition rule *)
+
+  (* Blank is part of the input *)
+  if String.contains input blank.[0] then raise (InvalidArgs "The input must not contains the blank sign") else ()
 
 
 let validate_params args =
@@ -33,7 +86,57 @@ let validate_params args =
       if param1 = "" || param2 = "" then
         raise (InvalidParams "Parameters must not be empty")
       else
-        validate_args args.(1) args.(2);
+        validate_args args.(1) args.(2)
+
+let display_machine machine =
+  
+  Printf.printf "Machine Name: %s\n" machine.name;
+  Printf.printf "Machine alphabet: [%s]\n" (String.concat ", " machine.alphabet);
+  Printf.printf "Machine blank: '%s'\n" machine.blank;
+  Printf.printf "Machine states: [%s]\n" (String.concat ", " machine.states);
+  Printf.printf "Machine initial: %s\n" machine.initial;
+  Printf.printf "Machine finals: [%s]\n" (String.concat ", " machine.finals);
+  List.iter (fun (state, transitions) ->
+    List.iter (fun t ->
+      Printf.printf "(%s, %s) -> (%s, %s, %s)\n" 
+        state t.read t.to_state t.write t.action 
+    ) transitions
+  ) machine.transitions
+
+let find_transition transitions state symbol =
+  try
+    let options = List.assoc state transitions in
+    List.find (fun t -> t.read = symbol) options
+  with _ -> raise (ExecError ("No transition for state " ^ state ^ " with the symbol '" ^ symbol ^ "'"))
+
+let create_input_tape input =
+  match List.init (String.length input) (fun i -> String.make 1 input.[i]) with
+  | [] -> raise (ExecError "Input can not be empty")
+  | head :: tail -> ([], head, tail)
+
+let rec make_step machine state tape_left tape_curr tape_right =
+
+  let trans = find_transition machine.transitions state tape_curr in
+  Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
+    (String.concat "" tape_left) tape_curr (String.concat "" tape_right) state tape_curr trans.to_state trans.write trans.action;
+
+  if List.mem state machine.finals then
+    print_endline "END OF THE PROGRAM!"
+  else
+    let tape_left', tape_curr', tape_right' =
+    match trans.action with
+    | "LEFT" ->
+      (match List.rev tape_left with
+        | [] -> ([], machine.blank, tape_curr :: tape_right)
+        | x :: xs -> (List.rev xs, x, tape_curr :: tape_right))
+    | "RIGHT" ->
+      (match tape_right with
+        | [] -> (tape_left @ [trans.write], machine.blank, [])
+        | x :: xs -> (tape_left @ [trans.write], x, xs))
+    | _ -> raise (ExecError "Invalid action in the transition");
+    in
+    make_step machine trans.to_state tape_left' tape_curr' tape_right'
+
 
 let () =
 
@@ -41,24 +144,11 @@ let () =
     validate_params Sys.argv;
 
     let json = Yojson.Basic.from_file "unary_sub.json" in
-
-    let name = json |> member "name" |> to_string in 
-    Printf.printf "Machine Name: %s\n" name;
-
-    let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in 
-    Printf.printf "Machine alphabet: [%s]\n" (String.concat ", " alphabet);
-
-    let blank = json |> member "blank" |> to_string in 
-    Printf.printf "Machine blank: '%s'\n" blank;
-
-    let states = json |> member "states" |> to_list |> List.map to_string in 
-    Printf.printf "Machine states: [%s]\n" (String.concat ", " states);
-
-    let initial = json |> member "initial" |> to_string in 
-    Printf.printf "Machine initial: %s\n" initial;
-
-    let finals = json |> member "finals" |> to_list |> List.map to_string in 
-    Printf.printf "Machine finals: [%s]\n" (String.concat ", " finals);
+    
+    let machine = create_machine json in
+    display_machine machine;
+    let (left, curr, right) = create_input_tape Sys.argv.(2) in
+    make_step machine machine.initial left curr right;
 
     print_endline "END";
 
@@ -67,6 +157,8 @@ let () =
     Printf.printf "Error: %s: Expected: ft_turing [-h] jsonfile input\n" msg
   | InvalidArgs msg ->
     Printf.printf "Parser Error: %s\n" msg
+  | ExecError msg ->
+    Printf.printf "Exec Error: %s\n" msg
   | OptionHelp ->
     print_endline "usage: ft_turing [-h] jsonfile input\n
 positional arguments:
