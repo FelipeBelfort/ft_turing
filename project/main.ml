@@ -1,9 +1,10 @@
 open Yojson.Basic.Util
+open Errors
 
 exception InvalidParams of string
 exception InvalidArgs of string
-exception ExecError of string
 exception OptionHelp
+exception ExecError of string
 
 type tape = {
   left: string list;
@@ -58,30 +59,80 @@ let create_machine json =
   }
 
 
+let is_input_valid input alphabet =
+  let allowed = String.concat "" alphabet in
+  String.for_all (fun ch -> String.contains allowed ch) input
+
+
+let validate_initial_and_finals states initial finals =
+  let in_states s = List.mem s states in
+  if not (in_states initial) then
+    false
+  else if not (List.for_all in_states finals) then
+    false
+  else
+    true
+
+
+let validate_transitions (states : string list) (transitions : (string * transition list) list) : bool =
+  let in_states s = List.mem s states in
+  List.for_all (fun (from_state, rules) ->
+    in_states from_state &&
+    List.for_all (fun rule -> in_states rule.to_state) rules
+  ) transitions
+
+
+let validate_transition_coverage states finals transitions =
+  let covered = List.map fst transitions in
+  let non_final_states = List.filter (fun s -> not (List.mem s finals)) states in
+  let uncovered = List.filter (fun s -> not (List.mem s covered)) non_final_states in
+  match uncovered with
+  | [] -> true
+  | lst -> false
+
+
 let validate_args json_path input =
   
-  let json = Yojson.Basic.from_file json_path in
+  try
+    let json = Yojson.Basic.from_file json_path in
+    let name = json |> member "name" |> to_string in
+    let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
+    let blank = json |> member "blank" |> to_string in
+    let states = json |> member "states" |> to_list |> List.map to_string in
+    let initial = json |> member "initial" |> to_string in
+    let finals = json |> member "finals" |> to_list |> List.map to_string in
+    let transitions = json |> member "transitions" |> parse_transitions in
+    
+    (* Fields aren't empty *)
+    if (name = "" || blank = "" || initial = "" || List.is_empty alphabet || List.is_empty states || List.is_empty finals) then
+      raise (InvalidArgs "The machine should not have empty fields");
+    (* Blank is not part of the alphabet *)
+    if not (String.contains (String.concat "" alphabet) blank.[0]) then raise (InvalidArgs "The blank must be part of the alphabet");
+    (* Input has only char from the alphabet *)
+    if not (is_input_valid input alphabet) then raise (InvalidArgs "The input must contains only characters from the given alphabet");
+    (* States must contains Initial and Finals *)
+    if not (validate_initial_and_finals states initial finals) then raise (InvalidArgs "The initial and finals states must be part of the states");
+    (* To_state exists *)
+    if not (validate_transitions states transitions) then raise (InvalidArgs "All to_state in transitions must exist");
+    (* All States (except finals) have a transition rule *)
+    if not (validate_transition_coverage states finals transitions) then raise (InvalidArgs "All states must have a transition");
+    
+    (* Blank is part of the input *)
+    if String.contains input blank.[0] then raise (InvalidArgs "The input must not contains the blank sign");
+    {
+      name = name;
+      alphabet = alphabet;
+      blank = blank;
+      states = states;
+      initial = initial;
+      finals = finals;
+      transitions = transitions;
+    }
 
-  let name = json |> member "name" |> to_string in
-  let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
-  let blank = json |> member "blank" |> to_string in
-  let states = json |> member "states" |> to_list |> List.map to_string in
-  let initial = json |> member "initial" |> to_string in
-  let finals = json |> member "finals" |> to_list |> List.map to_string in
-  
-  (* Fields aren't empty *)
-  if (name = "" || blank = "" || initial = "" || List.is_empty alphabet || List.is_empty states || List.is_empty finals) then
-    raise (InvalidArgs "The machine should not have empty fields") else ();
-  (* Blank is not part of the alphabet *)
-  if not (String.contains (String.concat "" alphabet) blank.[0]) then raise (InvalidArgs "The blank must be part of the alphabet") else ();
-  (* Input has only char from the alphabet *)
-  (* States must contains Initial and Finals *)
-  (* All fields exist or is a valid json *)
-  (* Transitions exists *)
-  (* All States (except finals) have a transition rule *)
-
-  (* Blank is part of the input *)
-  if String.contains input blank.[0] then raise (InvalidArgs "The input must not contains the blank sign") else ()
+  with
+  | InvalidArgs msg -> raise (InvalidArgs msg);
+    (* All fields exist or is a valid json *)
+  | _ -> raise (InvalidArgs "The machine has to be in a json format with all the correct fields")
 
 
 let validate_params args =
@@ -99,8 +150,10 @@ let validate_params args =
         validate_args args.(1) args.(2)
 
 
-let display_machine machine =
-  
+let display_machine machine input =
+  let size = 65 in
+  print_endline (String.init size (fun _ -> '#'));
+  print_endline (String.init size (fun _ -> '#'));
   Printf.printf "Machine Name: %s\n" machine.name;
   Printf.printf "Machine alphabet: [%s]\n" (String.concat ", " machine.alphabet);
   Printf.printf "Machine blank: '%s'\n" machine.blank;
@@ -112,7 +165,10 @@ let display_machine machine =
       Printf.printf "(%s, %s) -> (%s, %s, %s)\n" 
         state t.read t.to_state t.write t.action 
     ) transitions
-  ) machine.transitions
+  ) machine.transitions;
+  print_endline (String.init size (fun _ -> '#'));
+  print_endline input;
+  print_endline (String.init size (fun _ -> '#'))
 
 
 let find_transition transitions state symbol =
@@ -140,14 +196,18 @@ let move_right tape trans blank =
   | x :: xs -> { left = trans.write :: tape.left; curr = x; right = xs }
 
 
+let display_step state trans tape =
+  Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
+    (String.concat "" (List.rev tape.left)) tape.curr (String.concat "" tape.right) state tape.curr trans.to_state trans.write trans.action
+
+
 let rec make_step machine state tape =
 
   if List.mem state machine.finals then
     print_endline "END OF THE PROGRAM!"
   else
     let trans = find_transition machine.transitions state tape.curr in
-    Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
-      (String.concat "" (List.rev tape.left)) tape.curr (String.concat "" tape.right) state tape.curr trans.to_state trans.write trans.action;
+    display_step state trans tape;
     let tape' =
     match trans.action with
     | "LEFT" -> move_left tape trans machine.blank
@@ -160,12 +220,11 @@ let rec make_step machine state tape =
 let () =
 
   try
-    validate_params Sys.argv;
+    (* let json = validate_params Sys.argv in
 
-    let json = Yojson.Basic.from_file "unary_sub.json" in
-    
-    let machine = create_machine json in
-    display_machine machine;
+    let machine = create_machine json in *)
+    let machine = validate_params Sys.argv in
+    display_machine machine Sys.argv.(2);
     let tape = create_input_tape Sys.argv.(2) in
     make_step machine machine.initial tape;
 
