@@ -1,7 +1,7 @@
 NAME = ft_turing
 BUILD = build
 
-SRC = errors.ml main.ml
+SRC = turing_types.ml turing_errors.ml turing_display.ml turing_exec.ml main.ml
 
 OBJ = $(patsubst %.ml,$(BUILD)/%.cmx,$(SRC))
 
@@ -11,7 +11,7 @@ PKGS := $(shell grep -v '^ocamlfind$$' .project-deps | tr '\n' ' ')
 all: $(NAME)
 
 $(BUILD)/%.cmx: %.ml | $(BUILD)
-	$(OCAMLOPT) -package $(PKGS) -c -o $@ $<
+	$(OCAMLOPT) -package $(PKGS) -linkpkg -I $(BUILD) -c -o $@ $<
 
 $(BUILD):
 	mkdir -p $(BUILD)

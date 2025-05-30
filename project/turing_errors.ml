@@ -1,21 +1,5 @@
 open Yojson.Basic.Util
-
-type transition = {
-  read: string;
-  to_state: string;
-  write: string;
-  action: string;
-}
-
-type machine = {
-  name: string;
-  alphabet: string list;
-  blank: string;
-  states: string list;
-  initial: string;
-  finals: string list;
-  transitions: (string * transition list) list;
-}
+open Turing_types
 
 exception InvalidParams of string
 exception InvalidArgs of string
