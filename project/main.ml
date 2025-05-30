@@ -5,6 +5,12 @@ exception InvalidArgs of string
 exception ExecError of string
 exception OptionHelp
 
+type tape = {
+  left: string list;
+  curr: string;
+  right: string list;
+} 
+
 type transition = {
   read: string;
   to_state: string;
@@ -22,6 +28,7 @@ type machine = {
   transitions: (string * transition list) list;
 }
 
+
 let parse_transition json =
   {
     read = json |> member "read" |> to_string;
@@ -30,12 +37,14 @@ let parse_transition json =
     action = json |> member "action" |> to_string;
   }
 
+
 let parse_transitions json =
   json |> to_assoc
        |> List.map (fun (state, list_json) ->
             let transitions = list_json |> to_list |> List.map parse_transition in
             (state, transitions)
           )
+
 
 let create_machine json =
   {
@@ -47,6 +56,7 @@ let create_machine json =
     finals = json |> member "finals" |> to_list |> List.map to_string;
     transitions = json |> member "transitions" |> parse_transitions;
   }
+
 
 let validate_args json_path input =
   
@@ -88,6 +98,7 @@ let validate_params args =
       else
         validate_args args.(1) args.(2)
 
+
 let display_machine machine =
   
   Printf.printf "Machine Name: %s\n" machine.name;
@@ -103,39 +114,47 @@ let display_machine machine =
     ) transitions
   ) machine.transitions
 
+
 let find_transition transitions state symbol =
   try
     let options = List.assoc state transitions in
     List.find (fun t -> t.read = symbol) options
   with _ -> raise (ExecError ("No transition for state " ^ state ^ " with the symbol '" ^ symbol ^ "'"))
 
+
 let create_input_tape input =
   match List.init (String.length input) (fun i -> String.make 1 input.[i]) with
   | [] -> raise (ExecError "Input can not be empty")
-  | head :: tail -> ([], head, tail)
+  | head :: tail -> {left = []; curr = head; right = tail}
 
-let rec make_step machine state tape_left tape_curr tape_right =
 
-  let trans = find_transition machine.transitions state tape_curr in
-  Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
-    (String.concat "" tape_left) tape_curr (String.concat "" tape_right) state tape_curr trans.to_state trans.write trans.action;
+let move_left tape trans blank =
+  match tape.left with
+  | [] -> { left = []; curr = blank; right = trans.write :: tape.right }
+  | x :: xs -> { left = xs; curr = x; right = trans.write :: tape.right }
+
+
+let move_right tape trans blank =
+  match tape.right with
+  | [] -> { left = trans.write :: tape.left; curr = blank; right = [] }
+  | x :: xs -> { left = trans.write :: tape.left; curr = x; right = xs }
+
+
+let rec make_step machine state tape =
 
   if List.mem state machine.finals then
     print_endline "END OF THE PROGRAM!"
   else
-    let tape_left', tape_curr', tape_right' =
+    let trans = find_transition machine.transitions state tape.curr in
+    Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
+      (String.concat "" (List.rev tape.left)) tape.curr (String.concat "" tape.right) state tape.curr trans.to_state trans.write trans.action;
+    let tape' =
     match trans.action with
-    | "LEFT" ->
-      (match List.rev tape_left with
-        | [] -> ([], machine.blank, tape_curr :: tape_right)
-        | x :: xs -> (List.rev xs, x, tape_curr :: tape_right))
-    | "RIGHT" ->
-      (match tape_right with
-        | [] -> (tape_left @ [trans.write], machine.blank, [])
-        | x :: xs -> (tape_left @ [trans.write], x, xs))
+    | "LEFT" -> move_left tape trans machine.blank
+    | "RIGHT" -> move_right tape trans machine.blank
     | _ -> raise (ExecError "Invalid action in the transition");
     in
-    make_step machine trans.to_state tape_left' tape_curr' tape_right'
+    make_step machine trans.to_state tape'
 
 
 let () =
@@ -147,10 +166,8 @@ let () =
     
     let machine = create_machine json in
     display_machine machine;
-    let (left, curr, right) = create_input_tape Sys.argv.(2) in
-    make_step machine machine.initial left curr right;
-
-    print_endline "END";
+    let tape = create_input_tape Sys.argv.(2) in
+    make_step machine machine.initial tape;
 
   with
   | InvalidParams msg ->
