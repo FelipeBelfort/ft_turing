@@ -1,0 +1,55 @@
+{
+  "name": "equal01",
+  "alphabet": [ "0", "1", ".", "=", "y", "n" ],
+  "blank": ".",
+  "states": [
+    "search_0",
+    "findlast1",
+    "check1",
+    "backtostart",
+    "accept",
+    "printn",
+    "reject",
+    "HALT"
+  ],
+  "initial": "search_0",
+  "finals": [ "HALT" ],
+  "transitions": {
+    "search_0": [
+      { "read": "0", "to_state": "findlast1", "write": ".", "action": "RIGHT" },
+      { "read": "1", "to_state": "printn", "write": "1", "action": "RIGHT" },
+      { "read": ".", "to_state": "accept", "write": "y", "action": "RIGHT" }
+    ],
+    "findlast1": [
+      { "read": "0", "to_state": "findlast1", "write": "0", "action": "RIGHT" },
+      { "read": "1", "to_state": "findlast1", "write": "1", "action": "RIGHT" },
+      { "read": "=", "to_state": "check1", "write": "=", "action": "LEFT" },
+      { "read": ".", "to_state": "check1", "write": ".", "action": "LEFT" }
+    ],
+    "check1": [
+      { "read": "1", "to_state": "backtostart", "write": ".", "action": "LEFT" },
+      { "read": "0", "to_state": "printn", "write": "0", "action": "RIGHT" },
+      { "read": ".", "to_state": "printn", "write": ".", "action": "RIGHT" }
+    ],
+    "backtostart": [
+      { "read": "0", "to_state": "backtostart", "write": "0", "action": "LEFT" },
+      { "read": "1", "to_state": "backtostart", "write": "1", "action": "LEFT" },
+      { "read": ".", "to_state": "search_0", "write": ".", "action": "RIGHT" }
+    ],
+    "accept": [
+      { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" }
+    ],
+    "printn": [
+      { "read": "1", "to_state": "printn", "write": "1", "action": "RIGHT" },
+      { "read": "0", "to_state": "printn", "write": "0", "action": "RIGHT" },
+      { "read": "=", "to_state": "reject", "write": "n", "action": "RIGHT" },
+      { "read": ".", "to_state": "reject", "write": "n", "action": "RIGHT" }
+    ],
+    "reject": [
+      { "read": "=", "to_state": "HALT", "write": "n", "action": "RIGHT" },
+      { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" }
+    ]
+  }
+}
+
+

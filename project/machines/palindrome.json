@@ -1,0 +1,58 @@
+{
+  "name": "palindrome",
+  "alphabet": [ "0", "1", ".", "=", "y", "n" ],
+  "blank": ".",
+  "states": [
+    "search_letter",
+    "findlast0",
+    "findlast1",
+    "check0",
+    "check1",
+    "backtostart",
+    "accept",
+    "reject",
+    "HALT"
+  ],
+  "initial": "search_letter",
+  "finals": [ "HALT" ],
+  "transitions": {
+    "search_letter": [
+      { "read": "0", "to_state": "findlast0", "write": ".", "action": "RIGHT" },
+      { "read": "1", "to_state": "findlast1", "write": ".", "action": "RIGHT" },
+      { "read": ".", "to_state": "accept", "write": "y", "action": "RIGHT" }
+    ],
+    "findlast0": [
+      { "read": "0", "to_state": "findlast0", "write": "0", "action": "RIGHT" },
+      { "read": "1", "to_state": "findlast0", "write": "1", "action": "RIGHT" },
+      { "read": "=", "to_state": "check0", "write": "=", "action": "LEFT" },
+      { "read": ".", "to_state": "check0", "write": ".", "action": "LEFT" }
+    ],
+    "findlast1": [
+      { "read": "0", "to_state": "findlast1", "write": "0", "action": "RIGHT" },
+      { "read": "1", "to_state": "findlast1", "write": "1", "action": "RIGHT" },
+      { "read": "=", "to_state": "check1", "write": "=", "action": "LEFT" },
+      { "read": ".", "to_state": "check1", "write": ".", "action": "LEFT" }
+    ],
+    "check0": [
+      { "read": "0", "to_state": "backtostart", "write": ".", "action": "LEFT" },
+      { "read": "1", "to_state": "reject", "write": "n", "action": "RIGHT" },
+      { "read": ".", "to_state": "accept", "write": "y", "action": "RIGHT" }
+    ],
+    "check1": [
+      { "read": "1", "to_state": "backtostart", "write": ".", "action": "LEFT" },
+      { "read": "0", "to_state": "reject", "write": "n", "action": "RIGHT" },
+      { "read": ".", "to_state": "accept", "write": "y", "action": "RIGHT" }
+    ],
+    "backtostart": [
+      { "read": "0", "to_state": "backtostart", "write": "0", "action": "LEFT" },
+      { "read": "1", "to_state": "backtostart", "write": "1", "action": "LEFT" },
+      { "read": ".", "to_state": "search_letter", "write": ".", "action": "RIGHT" }
+    ],
+    "accept": [
+      { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" }
+    ],
+    "reject": [
+      { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" }
+    ]
+  }
+}

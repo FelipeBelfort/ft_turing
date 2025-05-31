@@ -25,4 +25,4 @@
       { "read" : "1", "to_state": "scanright", "write": ".", "action": "RIGHT"}
     ]
   }
-  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "even0",
+  "alphabet": [ "0", ".", "=", "y", "n" ],
+  "blank": ".",
+  "states": [
+    "isodd",
+    "iseven",
+    "reject",
+    "accept",
+    "HALT"
+  ],
+  "initial": "iseven",
+  "finals": [ "HALT" ],
+  "transitions": {
+    "isodd": [
+      { "read": "0", "to_state": "iseven", "write": "0", "action": "RIGHT" },
+      { "read": "1", "to_state": "iseven", "write": "1", "action": "RIGHT" },
+      { "read": "=", "to_state": "reject", "write": "n", "action": "RIGHT" },
+      { "read": ".", "to_state": "reject", "write": "n", "action": "RIGHT" }
+    ],
+    "iseven": [
+      { "read": "0", "to_state": "isodd", "write": "0", "action": "RIGHT" },
+      { "read": "1", "to_state": "isodd", "write": "1", "action": "RIGHT" },
+      { "read": "=", "to_state": "accept", "write": "y", "action": "RIGHT" },
+      { "read": ".", "to_state": "accept", "write": "y", "action": "RIGHT" }
+    ],
+    "accept": [
+      { "read": ".", "to_state": "HALT", "write": "y", "action": "RIGHT" }
+    ],
+    "reject": [
+      { "read": ".", "to_state": "HALT", "write": "n", "action": "RIGHT" }
+    ]
+  }
+}
