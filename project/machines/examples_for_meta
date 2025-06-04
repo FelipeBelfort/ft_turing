@@ -1,0 +1,11 @@
+The expected input is 
+"alphabet#States#InitialState#Transitions(divided by '#')#~Input"
+
+examples:
+
+v1:
+"1+.=#ABC#A#A1A1R#A+B.R#A.B.R#A=C.R#B1B.L#B+B.R#B.A1R#B=C.R#~111+11="
+
+
+v2:
+"1+.=#ABCD#A#A1B.R#A+A.R#A=D.R#B1B1R#B+B+R#B=B=R#B.C1L#C1C1L#C+C+L#C=C=L#C.A.R#~111+11="
