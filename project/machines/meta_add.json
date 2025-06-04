@@ -1,0 +1,990 @@
+{
+  "name": "meta_add",
+  "alphabet": [
+    "A",
+    "B",
+    "C",
+    "R",
+    "L",
+    "#",
+    "~",
+    "_",
+    "1",
+    "+",
+    ".",
+    "="
+  ],
+  "blank": "_",
+  "states": [
+    "erase_alphabet",
+  "erase_states",
+  "write_init_state",
+  "write_init_state_A",
+  "write_init_state_B",
+  "write_init_state_C",
+  "find_input",
+  "get_char_read",
+  "read_state",
+  "get_new_state",
+  "get_new_char",
+  "put_input_char",
+  "swipe_left",
+  "HALT",
+  "find_tape_start_1",
+  "write_read_char_1",
+  "read_state_A_char",
+  "next_hashtag_A_1",
+  "check_state_A_1",
+  "check_char_A_1",
+  "find_old_state_A",
+  "write_new_state_A",
+  "paste_new_state_A",
+  "get_new_char_1",
+  "find_input_1_to_L",
+  "find_input_1_to_R",
+  "put_new_char_1_to_L",
+  "put_new_char_1_to_R",
+  "swipe_left_1",
+  "swipe_right_1",
+  "find_tape_start_+",
+  "write_read_char_+",
+  "next_hashtag_A_+",
+  "check_state_A_+",
+  "check_char_A_+",
+  "get_new_char_+",
+  "find_input_+_to_L",
+  "find_input_+_to_R",
+  "put_new_char_+_to_L",
+  "put_new_char_+_to_R",
+  "swipe_left_+",
+  "swipe_right_+",
+  "find_tape_start_.",
+  "write_read_char_.",
+  "next_hashtag_A_.",
+  "check_state_A_.",
+  "check_char_A_.",
+  "get_new_char_.",
+  "find_input_._to_L",
+  "find_input_._to_R",
+  "put_new_char_._to_L",
+  "put_new_char_._to_R",
+  "swipe_left_.",
+  "swipe_right_.",
+  "find_tape_start_=",
+  "write_read_char_=",
+  "next_hashtag_A_=",
+  "check_state_A_=",
+  "check_char_A_=",
+  "get_new_char_=",
+  "find_input_=_to_L",
+  "find_input_=_to_R",
+  "put_new_char_=_to_L",
+  "put_new_char_=_to_R",
+  "swipe_left_=",
+  "swipe_right_=",
+  "read_state_B_char",
+  "next_hashtag_B_1",
+  "check_state_B_1",
+  "check_char_B_1",
+  "find_old_state_B",
+  "write_new_state_B",
+  "paste_new_state_B",
+  "next_hashtag_B_+",
+  "check_state_B_+",
+  "check_char_B_+",
+  "next_hashtag_B_.",
+  "check_state_B_.",
+  "check_char_B_.",
+  "next_hashtag_B_=",
+  "check_state_B_=",
+  "check_char_B_=",
+  "read_state_C_char",
+  "next_hashtag_C_1",
+  "check_state_C_1",
+  "check_char_C_1",
+  "find_old_state_C",
+  "write_new_state_C",
+  "paste_new_state_C",
+  "next_hashtag_C_+",
+  "check_state_C_+",
+  "check_char_C_+",
+  "next_hashtag_C_.",
+  "check_state_C_.",
+  "check_char_C_.",
+  "next_hashtag_C_=",
+  "check_state_C_=",
+  "check_char_C_="
+  ],
+  "initial": "erase_alphabet",
+  "finals": [
+    "HALT"
+  ],
+  "transitions": {
+    "erase_alphabet": [
+      { "read": "1", "to_state": "erase_alphabet", "write": "_", "action": "RIGHT" },
+      { "read": "+", "to_state": "erase_alphabet", "write": "_", "action": "RIGHT" },
+      { "read": ".", "to_state": "erase_alphabet", "write": "_", "action": "RIGHT" },
+      { "read": "=", "to_state": "erase_alphabet", "write": "_", "action": "RIGHT" },
+      { "read": "#", "to_state": "erase_states", "write": "_", "action": "RIGHT" }
+    ],
+    "erase_states": [
+      { "read": "A", "to_state": "erase_states", "write": "_", "action": "RIGHT" },
+      { "read": "B", "to_state": "erase_states", "write": "_", "action": "RIGHT" },
+      { "read": "C", "to_state": "erase_states", "write": "_", "action": "RIGHT" },
+      { "read": "#", "to_state": "write_init_state", "write": "_", "action": "RIGHT" }
+    ],
+    "write_init_state": [
+      {"read": "A", "to_state": "write_init_state_A", "write": "1", "action": "LEFT"},
+      {"read": "B", "to_state": "write_init_state_B", "write": "1", "action": "LEFT"},
+      {"read": "C", "to_state": "write_init_state_C", "write": "1", "action": "LEFT"}
+    ],
+    "find_input": [
+      { "read": "A", "to_state": "find_input", "write": "A", "action": "RIGHT" },
+      { "read": "B", "to_state": "find_input", "write": "B", "action": "RIGHT" },
+      { "read": "C", "to_state": "find_input", "write": "C", "action": "RIGHT" },
+      { "read": "#", "to_state": "find_input", "write": "#", "action": "RIGHT" },
+      { "read": "L", "to_state": "find_input", "write": "L", "action": "RIGHT" },
+      { "read": "R", "to_state": "find_input", "write": "R", "action": "RIGHT" },
+      { "read": ".", "to_state": "find_input", "write": ".", "action": "RIGHT" },
+      { "read": "1", "to_state": "find_input", "write": "1", "action": "RIGHT" },
+      { "read": "+", "to_state": "find_input", "write": "+", "action": "RIGHT" },
+      { "read": "=", "to_state": "find_input", "write": "=", "action": "RIGHT" },
+      { "read": "~", "to_state": "get_char_read", "write": "~", "action": "RIGHT" }
+    ],
+    "get_char_read": [
+      {"read": "1", "to_state": "find_tape_start_1", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_tape_start_+", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_tape_start_.", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_tape_start_=", "write": "=", "action": "LEFT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "read_state": [
+      {"read": "A", "to_state": "read_state_A_char", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "read_state_B_char", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "read_state_C_char", "write": "C", "action": "RIGHT"}
+    ],
+    "get_new_state": [
+      {"read": "A", "to_state": "find_old_state_A", "write": "_", "action": "LEFT"},
+      {"read": "B", "to_state": "find_old_state_B", "write": "_", "action": "LEFT"},
+      {"read": "C", "to_state": "find_old_state_C", "write": "_", "action": "LEFT"}
+    ],
+    "get_new_char": [
+      {"read": "1", "to_state": "get_new_char_1", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "get_new_char_+", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "get_new_char_.", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "get_new_char_=", "write": "=", "action": "RIGHT"}
+    ],
+    "put_input_char": [
+      {"read": "1", "to_state": "get_char_read", "write": "~", "action": "RIGHT"},
+      {"read": "+", "to_state": "get_char_read", "write": "~", "action": "RIGHT"},
+      {"read": ".", "to_state": "get_char_read", "write": "~", "action": "RIGHT"},
+      {"read": "=", "to_state": "get_char_read", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "get_char_read", "write": "~", "action": "RIGHT"},
+      {"read": "~", "to_state": "get_char_read", "write": "~", "action": "RIGHT"}
+    ],
+
+
+
+    "find_tape_start_1": [
+      {"read": "_", "to_state": "write_read_char_1", "write": "_", "action": "RIGHT"},
+      { "read": "A", "to_state": "find_tape_start_1", "write": "A", "action": "LEFT" },
+      { "read": "B", "to_state": "find_tape_start_1", "write": "B", "action": "LEFT" },
+      { "read": "C", "to_state": "find_tape_start_1", "write": "C", "action": "LEFT" },
+      { "read": "#", "to_state": "find_tape_start_1", "write": "#", "action": "LEFT" },
+      { "read": "L", "to_state": "find_tape_start_1", "write": "L", "action": "LEFT" },
+      { "read": "R", "to_state": "find_tape_start_1", "write": "R", "action": "LEFT" },
+      { "read": ".", "to_state": "find_tape_start_1", "write": ".", "action": "LEFT" },
+      { "read": "1", "to_state": "find_tape_start_1", "write": "1", "action": "LEFT" },
+      { "read": "+", "to_state": "find_tape_start_1", "write": "+", "action": "LEFT" },
+      { "read": "=", "to_state": "find_tape_start_1", "write": "=", "action": "LEFT" },
+      { "read": "~", "to_state": "find_tape_start_1", "write": "~", "action": "LEFT" }
+    ],
+    "find_tape_start_+": [
+      {"read": "_", "to_state": "write_read_char_+", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_tape_start_+", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_tape_start_+", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_tape_start_+", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_tape_start_+", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_tape_start_+", "write": "L", "action": "LEFT"},
+      {"read": "1", "to_state": "find_tape_start_+", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_tape_start_+", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_tape_start_+", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_tape_start_+", "write": "=", "action": "LEFT"},
+      {"read": "#", "to_state": "find_tape_start_+", "write": "#", "action": "LEFT"},
+      {"read": "~", "to_state": "find_tape_start_+", "write": "~", "action": "LEFT"}
+    ],
+    "find_tape_start_.": [
+      {"read": "_", "to_state": "write_read_char_.", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_tape_start_.", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_tape_start_.", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_tape_start_.", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_tape_start_.", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_tape_start_.", "write": "L", "action": "LEFT"},
+      {"read": "1", "to_state": "find_tape_start_.", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_tape_start_.", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_tape_start_.", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_tape_start_.", "write": "=", "action": "LEFT"},
+      {"read": "#", "to_state": "find_tape_start_.", "write": "#", "action": "LEFT"},
+      {"read": "~", "to_state": "find_tape_start_.", "write": "~", "action": "LEFT"}
+    ],
+    "find_tape_start_=": [
+      {"read": "_", "to_state": "write_read_char_=", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_tape_start_=", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_tape_start_=", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_tape_start_=", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_tape_start_=", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_tape_start_=", "write": "L", "action": "LEFT"},
+      {"read": "1", "to_state": "find_tape_start_=", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_tape_start_=", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_tape_start_=", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_tape_start_=", "write": "=", "action": "LEFT"},
+      {"read": "#", "to_state": "find_tape_start_=", "write": "#", "action": "LEFT"},
+      {"read": "~", "to_state": "find_tape_start_=", "write": "~", "action": "LEFT"}
+    ],
+    "write_read_char_1": [
+      {"read": "A", "to_state": "write_read_char_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "write_read_char_1", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "write_read_char_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "read_state", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "read_state", "write": "1", "action": "LEFT"},
+      {"read": ".", "to_state": "read_state", "write": "1", "action": "LEFT"},
+      {"read": "=", "to_state": "read_state", "write": "1", "action": "LEFT"}
+    ],
+    "write_read_char_+": [
+      {"read": "A", "to_state": "write_read_char_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "write_read_char_+", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "write_read_char_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "read_state", "write": "+", "action": "LEFT"},
+      {"read": "+", "to_state": "read_state", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "read_state", "write": "+", "action": "LEFT"},
+      {"read": "=", "to_state": "read_state", "write": "+", "action": "LEFT"}
+    ],
+    "write_read_char_=": [
+      {"read": "A", "to_state": "write_read_char_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "write_read_char_=", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "write_read_char_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "read_state", "write": "=", "action": "LEFT"},
+      {"read": "+", "to_state": "read_state", "write": "=", "action": "LEFT"},
+      {"read": ".", "to_state": "read_state", "write": "=", "action": "LEFT"},
+      {"read": "=", "to_state": "read_state", "write": "=", "action": "LEFT"}
+    ],
+    "write_read_char_.": [
+      {"read": "A", "to_state": "write_read_char_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "write_read_char_.", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "write_read_char_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "read_state", "write": ".", "action": "LEFT"},
+      {"read": "+", "to_state": "read_state", "write": ".", "action": "LEFT"},
+      {"read": ".", "to_state": "read_state", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "read_state", "write": ".", "action": "LEFT"}
+    ],
+    "get_new_char_1": [
+      {"read": "L", "to_state": "find_input_1_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_1_to_R", "write": "R", "action": "RIGHT"}
+    ],
+    "get_new_char_=": [
+      {"read": "L", "to_state": "find_input_=_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_=_to_R", "write": "R", "action": "RIGHT"}
+    ],
+    "get_new_char_.": [
+      {"read": "L", "to_state": "find_input_._to_L", "write": "L", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_._to_R", "write": "R", "action": "RIGHT"}
+    ],
+    "get_new_char_+": [
+      {"read": "L", "to_state": "find_input_+_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_+_to_R", "write": "R", "action": "RIGHT"}
+    ],
+    "find_input_1_to_L": [
+      {"read": "~", "to_state": "put_new_char_1_to_L", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_1_to_L", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_1_to_L", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_1_to_L", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_1_to_L", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_1_to_L", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_1_to_L", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_1_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_1_to_L", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_1_to_L", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_1_to_L", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_._to_L": [
+      {"read": "~", "to_state": "put_new_char_._to_L", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_._to_L", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_._to_L", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_._to_L", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_._to_L", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_._to_L", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_._to_L", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_._to_L", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_._to_L", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_._to_L", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_._to_L", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_=_to_L": [
+      {"read": "~", "to_state": "put_new_char_=_to_L", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_=_to_L", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_=_to_L", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_=_to_L", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_=_to_L", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_=_to_L", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_=_to_L", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_=_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_=_to_L", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_=_to_L", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_=_to_L", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_+_to_L": [
+      {"read": "~", "to_state": "put_new_char_+_to_L", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_+_to_L", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_+_to_L", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_+_to_L", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_+_to_L", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_+_to_L", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_+_to_L", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_+_to_L", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_+_to_L", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_+_to_L", "write": "C", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_+_to_L", "write": "#", "action": "RIGHT"}
+    ],
+    "find_input_1_to_R": [
+      {"read": "~", "to_state": "put_new_char_1_to_R", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_1_to_R", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_1_to_R", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_1_to_R", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_1_to_R", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_1_to_R", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_1_to_R", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_1_to_R", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_1_to_R", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_1_to_R", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_1_to_R", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_=_to_R": [
+      {"read": "~", "to_state": "put_new_char_=_to_R", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_=_to_R", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_=_to_R", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_=_to_R", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_=_to_R", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_=_to_R", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_=_to_R", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_=_to_R", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_=_to_R", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_=_to_R", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_=_to_R", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_._to_R": [
+      {"read": "~", "to_state": "put_new_char_._to_R", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_._to_R", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_._to_R", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_._to_R", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_._to_R", "write": "=", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_._to_R", "write": "#", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_._to_R", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_._to_R", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_._to_R", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_._to_R", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_._to_R", "write": "C", "action": "RIGHT"}
+    ],
+    "find_input_+_to_R": [
+      {"read": "~", "to_state": "put_new_char_+_to_R", "write": "~", "action": "RIGHT"},
+      {"read": "1", "to_state": "find_input_+_to_R", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "find_input_+_to_R", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "find_input_+_to_R", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "find_input_+_to_R", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "find_input_+_to_R", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "find_input_+_to_R", "write": "L", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_input_+_to_R", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "find_input_+_to_R", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "find_input_+_to_R", "write": "C", "action": "RIGHT"},
+      {"read": "#", "to_state": "find_input_+_to_R", "write": "#", "action": "RIGHT"}
+    ],
+    "put_new_char_1_to_L": [
+      {"read": "_", "to_state": "swipe_left", "write": "1", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_left", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_left", "write": "1", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_left", "write": "1", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_left", "write": "1", "action": "LEFT"}
+    ],
+    "put_new_char_=_to_L": [
+      {"read": "_", "to_state": "swipe_left", "write": "=", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_left", "write": "=", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_left", "write": "=", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_left", "write": "=", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_left", "write": "=", "action": "LEFT"}
+    ],
+    "put_new_char_._to_L": [
+      {"read": "_", "to_state": "swipe_left", "write": ".", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_left", "write": ".", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_left", "write": ".", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_left", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_left", "write": ".", "action": "LEFT"}
+    ],
+    "put_new_char_+_to_L": [
+      {"read": "_", "to_state": "swipe_left", "write": "+", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_left", "write": "+", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_left", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_left", "write": "+", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_left", "write": "+", "action": "LEFT"}
+    ],
+    "put_new_char_1_to_R": [
+      {"read": "_", "to_state": "swipe_right_1", "write": "~", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_right_1", "write": "~", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_right_1", "write": "~", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_right_1", "write": "~", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_right_1", "write": "~", "action": "LEFT"}
+    ],
+    "put_new_char_._to_R": [
+      {"read": "_", "to_state": "swipe_right_.", "write": "~", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_right_.", "write": "~", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_right_.", "write": "~", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_right_.", "write": "~", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_right_.", "write": "~", "action": "LEFT"}
+    ],
+    "put_new_char_=_to_R": [
+      {"read": "_", "to_state": "swipe_right_=", "write": "~", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_right_=", "write": "~", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_right_=", "write": "~", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_right_=", "write": "~", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_right_=", "write": "~", "action": "LEFT"}
+    ],
+    "put_new_char_+_to_R": [
+      {"read": "_", "to_state": "swipe_right_+", "write": "~", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_right_+", "write": "~", "action": "LEFT"},
+      {"read": "+", "to_state": "swipe_right_+", "write": "~", "action": "LEFT"},
+      {"read": ".", "to_state": "swipe_right_+", "write": "~", "action": "LEFT"},
+      {"read": "=", "to_state": "swipe_right_+", "write": "~", "action": "LEFT"}
+    ],
+    "swipe_left": [
+      {"read": "~", "to_state": "swipe_left", "write": "~", "action": "LEFT"},
+      {"read": "1", "to_state": "swipe_left_1", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "swipe_left_+", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "swipe_left_.", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "swipe_left_=", "write": "=", "action": "RIGHT"}
+    ],
+    "swipe_left_1": [
+      {"read": "~", "to_state": "put_input_char", "write": "1", "action": "LEFT"}
+    ],
+    "swipe_left_=": [
+      {"read": "~", "to_state": "put_input_char", "write": "=", "action": "LEFT"}
+    ],
+    "swipe_left_.": [
+      {"read": "~", "to_state": "put_input_char", "write": ".", "action": "LEFT"}
+    ],
+    "swipe_left_+": [
+      {"read": "~", "to_state": "put_input_char", "write": "+", "action": "RIGHT"}
+    ],
+    "swipe_right_1": [
+      {"read": "~", "to_state": "put_input_char", "write": "1", "action": "RIGHT"}
+    ],
+    "swipe_right_=": [
+      {"read": "~", "to_state": "put_input_char", "write": "=", "action": "RIGHT"}
+    ],
+    "swipe_right_.": [
+      {"read": "~", "to_state": "put_input_char", "write": ".", "action": "RIGHT"}
+    ],
+    "swipe_right_+": [
+      {"read": "~", "to_state": "put_input_char", "write": "+", "action": "RIGHT"}
+    ],
+
+
+
+
+    "write_init_state_A": [
+      {"read": "_", "to_state": "find_input", "write": "A", "action": "RIGHT"}
+    ],
+    "read_state_A_char": [
+      {"read": "1", "to_state": "next_hashtag_A_1", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_.", "write": ".", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_+", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_=", "write": "=", "action": "RIGHT"}
+    ],
+    "next_hashtag_A_1": [
+      {"read": "#", "to_state": "check_state_A_1", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_A_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_1", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_1", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_1", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_A_1", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_A_1", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_A_=": [
+      {"read": "#", "to_state": "check_state_A_=", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_A_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_=", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_=", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_=", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_A_=", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_A_=", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_A_.": [
+      {"read": "#", "to_state": "check_state_A_.", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_A_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_.", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_.", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_.", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_.", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_A_.", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_A_.", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_A_+": [
+      {"read": "#", "to_state": "check_state_A_+", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_A_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_+", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_+", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_+", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_+", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_A_+", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_A_+", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_A_1": [
+      {"read": "A", "to_state": "check_char_A_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_1", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_A_+": [
+      {"read": "A", "to_state": "check_char_A_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_+", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_A_=": [
+      {"read": "A", "to_state": "check_char_A_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_=", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_A_.": [
+      {"read": "A", "to_state": "check_char_A_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_A_.", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_A_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_A_1": [
+      {"read": "1", "to_state": "get_new_state", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_1", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_A_=": [
+      {"read": "=", "to_state": "get_new_state", "write": "=", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_=", "write": ".", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_A_.": [
+      {"read": ".", "to_state": "get_new_state", "write": ".", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_A_.", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_.", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_A_+": [
+      {"read": "+", "to_state": "get_new_state", "write": "+", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_A_+", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_A_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_A_+", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "find_old_state_A": [
+      {"read": "_", "to_state": "write_new_state_A", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_old_state_A", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_old_state_A", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_old_state_A", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_old_state_A", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_old_state_A", "write": "L", "action": "LEFT"},
+      {"read": "#", "to_state": "find_old_state_A", "write": "#", "action": "LEFT"},
+      {"read": "1", "to_state": "find_old_state_A", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_old_state_A", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_old_state_A", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_old_state_A", "write": "=", "action": "LEFT"}
+    ],
+    "write_new_state_A": [
+      {"read": "A", "to_state": "paste_new_state_A", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_A", "write": "A", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_A", "write": "A", "action": "RIGHT"}
+    ],
+    "paste_new_state_A": [
+      {"read": "_", "to_state": "get_new_char", "write": "A", "action": "RIGHT"},
+      {"read": "A", "to_state": "paste_new_state_A", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_A", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_A", "write": "C", "action": "RIGHT"},
+      {"read": "R", "to_state": "paste_new_state_A", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "paste_new_state_A", "write": "L", "action": "RIGHT"},
+      {"read": "#", "to_state": "paste_new_state_A", "write": "#", "action": "RIGHT"},
+      {"read": "1", "to_state": "paste_new_state_A", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "paste_new_state_A", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "paste_new_state_A", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "paste_new_state_A", "write": "=", "action": "RIGHT"}
+    ],
+    
+    
+    
+    "write_init_state_B": [
+      {"read": "_", "to_state": "find_input", "write": "B", "action": "RIGHT"}
+    ],
+    "read_state_B_char": [
+      {"read": "1", "to_state": "next_hashtag_B_1", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_.", "write": ".", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_+", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_=", "write": "=", "action": "RIGHT"}
+    ],
+    "next_hashtag_B_1": [
+      {"read": "#", "to_state": "check_state_B_1", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_B_1", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_1", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_1", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_B_1", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_B_1", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_B_=": [
+      {"read": "#", "to_state": "check_state_B_=", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_B_=", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_=", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_=", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_B_=", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_B_=", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_B_.": [
+      {"read": "#", "to_state": "check_state_B_.", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_B_.", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_.", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_.", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_.", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_B_.", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_B_.", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_B_+": [
+      {"read": "#", "to_state": "check_state_B_+", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_B_+", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_+", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_+", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_+", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_B_+", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_B_+", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_B_1": [
+      {"read": "B", "to_state": "check_char_B_1", "write": "B", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_1", "write": "A", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_B_+": [
+      {"read": "B", "to_state": "check_char_B_+", "write": "B", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_+", "write": "A", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_B_=": [
+      {"read": "B", "to_state": "check_char_B_=", "write": "B", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_=", "write": "A", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_B_.": [
+      {"read": "B", "to_state": "check_char_B_.", "write": "B", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_B_.", "write": "A", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_B_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_B_1": [
+      {"read": "1", "to_state": "get_new_state", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_1", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_B_=": [
+      {"read": "=", "to_state": "get_new_state", "write": "=", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_=", "write": ".", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_B_.": [
+      {"read": ".", "to_state": "get_new_state", "write": ".", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_B_.", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_.", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_B_+": [
+      {"read": "+", "to_state": "get_new_state", "write": "+", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_B_+", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_B_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_B_+", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "find_old_state_B": [
+      {"read": "_", "to_state": "write_new_state_B", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_old_state_B", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_old_state_B", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_old_state_B", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_old_state_B", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_old_state_B", "write": "L", "action": "LEFT"},
+      {"read": "#", "to_state": "find_old_state_B", "write": "#", "action": "LEFT"},
+      {"read": "1", "to_state": "find_old_state_B", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_old_state_B", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_old_state_B", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_old_state_B", "write": "=", "action": "LEFT"}
+    ],
+    "write_new_state_B": [
+      {"read": "A", "to_state": "paste_new_state_B", "write": "B", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_B", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_B", "write": "B", "action": "RIGHT"}
+    ],
+    "paste_new_state_B": [
+      {"read": "_", "to_state": "get_new_char", "write": "B", "action": "RIGHT"},
+      {"read": "A", "to_state": "paste_new_state_B", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_B", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_B", "write": "C", "action": "RIGHT"},
+      {"read": "R", "to_state": "paste_new_state_B", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "paste_new_state_B", "write": "L", "action": "RIGHT"},
+      {"read": "#", "to_state": "paste_new_state_B", "write": "#", "action": "RIGHT"},
+      {"read": "1", "to_state": "paste_new_state_B", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "paste_new_state_B", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "paste_new_state_B", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "paste_new_state_B", "write": "=", "action": "RIGHT"}
+    ],
+    
+    
+    
+    "write_init_state_C": [
+      {"read": "_", "to_state": "find_input", "write": "C", "action": "RIGHT"}
+    ],
+    "read_state_C_char": [
+      {"read": "1", "to_state": "next_hashtag_C_1", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_.", "write": ".", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_+", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_=", "write": "=", "action": "RIGHT"}
+    ],
+    "next_hashtag_C_1": [
+      {"read": "#", "to_state": "check_state_C_1", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_1", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_C_1", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_1", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_1", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_C_1", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_C_1", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_C_=": [
+      {"read": "#", "to_state": "check_state_C_=", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_=", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_C_=", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_=", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_=", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_C_=", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_C_=", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_C_.": [
+      {"read": "#", "to_state": "check_state_C_.", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_.", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_C_.", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_.", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_.", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_.", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_C_.", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_C_.", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "next_hashtag_C_+": [
+      {"read": "#", "to_state": "check_state_C_+", "write": "#", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_+", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "next_hashtag_C_+", "write": "C", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_+", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_+", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_+", "write": "=", "action": "RIGHT"},
+      {"read": "R", "to_state": "next_hashtag_C_+", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "next_hashtag_C_+", "write": "L", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_C_1": [
+      {"read": "C", "to_state": "check_char_C_1", "write": "C", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_1", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_1", "write": "B", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_C_+": [
+      {"read": "C", "to_state": "check_char_C_+", "write": "C", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_+", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_+", "write": "B", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_C_=": [
+      {"read": "C", "to_state": "check_char_C_=", "write": "C", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_=", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_=", "write": "B", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_state_C_.": [
+      {"read": "C", "to_state": "check_char_C_.", "write": "C", "action": "RIGHT"},
+      {"read": "A", "to_state": "next_hashtag_C_.", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "next_hashtag_C_.", "write": "B", "action": "RIGHT"},
+      {"read": "1", "to_state": "HALT", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "HALT", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "HALT", "write": "=", "action": "RIGHT"},
+      {"read": "+", "to_state": "HALT", "write": "+", "action": "RIGHT"},
+      {"read": "~", "to_state": "HALT", "write": "~", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_C_1": [
+      {"read": "1", "to_state": "get_new_state", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_1", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_1", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_1", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_C_=": [
+      {"read": "=", "to_state": "get_new_state", "write": "=", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_=", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_=", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_=", "write": ".", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_C_.": [
+      {"read": ".", "to_state": "get_new_state", "write": ".", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_.", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "next_hashtag_C_.", "write": "+", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_.", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "check_char_C_+": [
+      {"read": "+", "to_state": "get_new_state", "write": "+", "action": "RIGHT"},
+      {"read": "1", "to_state": "next_hashtag_C_+", "write": "1", "action": "RIGHT"},
+      {"read": ".", "to_state": "next_hashtag_C_+", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "next_hashtag_C_+", "write": "=", "action": "RIGHT"},
+      {"read": "_", "to_state": "HALT", "write": "_", "action": "RIGHT"}
+    ],
+    "find_old_state_C": [
+      {"read": "_", "to_state": "write_new_state_C", "write": "_", "action": "RIGHT"},
+      {"read": "A", "to_state": "find_old_state_C", "write": "A", "action": "LEFT"},
+      {"read": "B", "to_state": "find_old_state_C", "write": "B", "action": "LEFT"},
+      {"read": "C", "to_state": "find_old_state_C", "write": "C", "action": "LEFT"},
+      {"read": "R", "to_state": "find_old_state_C", "write": "R", "action": "LEFT"},
+      {"read": "L", "to_state": "find_old_state_C", "write": "L", "action": "LEFT"},
+      {"read": "#", "to_state": "find_old_state_C", "write": "#", "action": "LEFT"},
+      {"read": "1", "to_state": "find_old_state_C", "write": "1", "action": "LEFT"},
+      {"read": "+", "to_state": "find_old_state_C", "write": "+", "action": "LEFT"},
+      {"read": ".", "to_state": "find_old_state_C", "write": ".", "action": "LEFT"},
+      {"read": "=", "to_state": "find_old_state_C", "write": "=", "action": "LEFT"}
+    ],
+    "write_new_state_C": [
+      {"read": "A", "to_state": "paste_new_state_C", "write": "C", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_C", "write": "C", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_C", "write": "C", "action": "RIGHT"}
+    ],
+    "paste_new_state_C": [
+      {"read": "_", "to_state": "get_new_char", "write": "C", "action": "RIGHT"},
+      {"read": "A", "to_state": "paste_new_state_C", "write": "A", "action": "RIGHT"},
+      {"read": "B", "to_state": "paste_new_state_C", "write": "B", "action": "RIGHT"},
+      {"read": "C", "to_state": "paste_new_state_C", "write": "C", "action": "RIGHT"},
+      {"read": "R", "to_state": "paste_new_state_C", "write": "R", "action": "RIGHT"},
+      {"read": "L", "to_state": "paste_new_state_C", "write": "L", "action": "RIGHT"},
+      {"read": "#", "to_state": "paste_new_state_C", "write": "#", "action": "RIGHT"},
+      {"read": "1", "to_state": "paste_new_state_C", "write": "1", "action": "RIGHT"},
+      {"read": "+", "to_state": "paste_new_state_C", "write": "+", "action": "RIGHT"},
+      {"read": ".", "to_state": "paste_new_state_C", "write": ".", "action": "RIGHT"},
+      {"read": "=", "to_state": "paste_new_state_C", "write": "=", "action": "RIGHT"}
+    ]
+  }
+}
