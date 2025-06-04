@@ -1,0 +1,27 @@
+{
+  "name": "unary_add",
+  "alphabet": [ "1", "+", "=", "."],
+  "blank": ".",
+  "states": ["scanright", "put_in_the_end", "moveback", "HALT"],
+  "initial": "scanright",
+  "finals": ["HALT"],
+  "transitions": {
+    "scanright": [
+      { "read": "1", "to_state": "put_in_the_end", "write": ".", "action": "RIGHT" },
+      { "read": "+", "to_state": "scanright", "write": ".", "action": "RIGHT" },
+      { "read": "=", "to_state": "HALT", "write": ".", "action": "RIGHT" }
+    ],
+    "put_in_the_end": [
+      { "read": "1", "to_state": "put_in_the_end", "write": "1", "action": "RIGHT" },
+      { "read": "+", "to_state": "put_in_the_end", "write": "+", "action": "RIGHT" },
+      { "read": "=", "to_state": "put_in_the_end", "write": "=", "action": "RIGHT" },
+      { "read": ".", "to_state": "moveback", "write": "1", "action": "LEFT" }
+    ],
+    "moveback": [
+      { "read": "1", "to_state": "moveback", "write": "1", "action": "LEFT" },
+      { "read": "+", "to_state": "moveback", "write": "+", "action": "LEFT" },
+      { "read": ".", "to_state": "scanright", "write": ".", "action": "RIGHT" },
+      { "read": "=", "to_state": "moveback", "write": "=", "action": "LEFT" }
+    ]
+  }
+}
