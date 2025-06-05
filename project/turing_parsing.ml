@@ -4,6 +4,7 @@ open Turing_types
 exception InvalidParams of string
 exception InvalidArgs of string
 exception OptionHelp
+exception OptionBenchmark
 
 let parse_transition json =
   {
@@ -55,43 +56,48 @@ let validate_transition_coverage states finals transitions =
   | lst -> false
 
 
+let load_machine json_path =
+  
+  let json = Yojson.Basic.from_file json_path in
+  let name = json |> member "name" |> to_string in
+  let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
+  let blank = json |> member "blank" |> to_string in
+  let states = json |> member "states" |> to_list |> List.map to_string in
+  let initial = json |> member "initial" |> to_string in
+  let finals = json |> member "finals" |> to_list |> List.map to_string in
+  let transitions = json |> member "transitions" |> parse_transitions in
+  {
+    name = name;
+    alphabet = alphabet;
+    blank = blank;
+    states = states;
+    initial = initial;
+    finals = finals;
+    transitions = transitions;
+  }
+
 let validate_args json_path input =
   
   try
-    let json = Yojson.Basic.from_file json_path in
-    let name = json |> member "name" |> to_string in
-    let alphabet = json |> member "alphabet" |> to_list |> List.map to_string in
-    let blank = json |> member "blank" |> to_string in
-    let states = json |> member "states" |> to_list |> List.map to_string in
-    let initial = json |> member "initial" |> to_string in
-    let finals = json |> member "finals" |> to_list |> List.map to_string in
-    let transitions = json |> member "transitions" |> parse_transitions in
+    let machine = load_machine json_path in
     
     (* Fields aren't empty *)
-    if (name = "" || blank = "" || initial = "" || List.is_empty alphabet || List.is_empty states || List.is_empty finals) then
+    if (machine.name = "" || machine.blank = "" || machine.initial = "" || List.is_empty machine.alphabet || List.is_empty machine.states || List.is_empty machine.finals) then
       raise (InvalidArgs "The machine should not have empty fields");
     (* Blank is not part of the alphabet *)
-    if not (String.contains (String.concat "" alphabet) blank.[0]) then raise (InvalidArgs "The blank must be part of the alphabet");
+    if not (String.contains (String.concat "" machine.alphabet) machine.blank.[0]) then raise (InvalidArgs "The blank must be part of the alphabet");
     (* Input has only char from the alphabet *)
-    if not (is_input_valid input alphabet) then raise (InvalidArgs "The input must contains only characters from the given alphabet");
+    if not (is_input_valid input machine.alphabet) then raise (InvalidArgs "The input must contains only characters from the given alphabet");
     (* States must contains Initial and Finals *)
-    if not (validate_initial_and_finals states initial finals) then raise (InvalidArgs "The initial and finals states must be part of the states");
+    if not (validate_initial_and_finals machine.states machine.initial machine.finals) then raise (InvalidArgs "The initial and finals states must be part of the states");
     (* To_state exists *)
-    if not (validate_transitions states transitions) then raise (InvalidArgs "All to_state in transitions must exist");
+    if not (validate_transitions machine.states machine.transitions) then raise (InvalidArgs "All to_state in transitions must exist");
     (* All States (except finals) have a transition rule *)
-    if not (validate_transition_coverage states finals transitions) then raise (InvalidArgs "All states must have a transition");
+    if not (validate_transition_coverage machine.states machine.finals machine.transitions) then raise (InvalidArgs "All states must have a transition");
     
     (* Blank is part of the input *)
-    if String.contains input blank.[0] then raise (InvalidArgs "The input must not contains the blank sign");
-    {
-      name = name;
-      alphabet = alphabet;
-      blank = blank;
-      states = states;
-      initial = initial;
-      finals = finals;
-      transitions = transitions;
-    }
+    if String.contains input machine.blank.[0] then raise (InvalidArgs "The input must not contains the blank sign");
+    machine
 
   with
   | InvalidArgs msg -> raise (InvalidArgs msg);
@@ -103,6 +109,8 @@ let validate_params args =
   if Array.length args = 2 && (args.(1) = "-h" || args.(1) = "--help") then
     raise OptionHelp
   else
+    if Array.length args = 2 && (args.(1) = "-b" || args.(1) = "--benchmark") then
+      raise OptionBenchmark;
     if Array.length args <> 3 then
       raise (InvalidParams "")
     else

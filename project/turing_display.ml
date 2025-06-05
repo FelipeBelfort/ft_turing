@@ -24,3 +24,13 @@ let display_machine machine input =
 let display_step state trans tape =
   Printf.printf "[%s<%s>%s] (%s, %s) -> (%s, %s, %s)\n" 
     (String.concat "" (List.rev tape.left)) tape.curr (String.concat "" tape.right) state tape.curr trans.to_state trans.write trans.action
+
+
+let display_help () =
+      print_endline "usage: ft_turing [-h] jsonfile input\n
+positional arguments:
+  jsonfile\t json description of the machine\n
+  input\t\t input of the machine\n
+optional arguments:
+  -h, --help\t\t show this help message and exit
+  -b, --benchmark\t show the time complexity of the machines"

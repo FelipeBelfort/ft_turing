@@ -1,4 +1,5 @@
 open Turing_types
+open Turing_display
 
 exception ExecError of string
 
@@ -26,3 +27,22 @@ let move_right tape trans blank =
   match tape.right with
   | [] -> { left = trans.write :: tape.left; curr = blank; right = [] }
   | x :: xs -> { left = trans.write :: tape.left; curr = x; right = xs }
+
+
+
+let rec make_step machine state tape steps testing =
+
+  let steps = steps + 1 in
+  if List.mem state machine.finals then
+    steps
+  else
+    let trans = find_transition machine.transitions state tape.curr in
+    if not testing then
+    display_step state trans tape;
+    let tape' =
+    match trans.action with
+    | "LEFT" -> move_left tape trans machine.blank
+    | "RIGHT" -> move_right tape trans machine.blank
+    | _ -> raise (ExecError "Invalid action in the transition");
+    in
+    make_step machine trans.to_state tape' steps testing

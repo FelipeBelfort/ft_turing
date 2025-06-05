@@ -1,7 +1,7 @@
 NAME = ft_turing
 BUILD = build
 
-SRC = turing_types.ml turing_errors.ml turing_display.ml turing_exec.ml main.ml
+SRC = turing_types.ml turing_parsing.ml turing_display.ml turing_exec.ml bonus_complexity.ml main.ml
 
 OBJ = $(patsubst %.ml,$(BUILD)/%.cmx,$(SRC))
 
