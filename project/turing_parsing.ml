@@ -1,8 +1,8 @@
 open Yojson.Basic.Util
 open Turing_types
 
-exception InvalidParams of string
 exception InvalidArgs of string
+exception InvalidParams of string
 exception OptionHelp
 exception OptionBenchmark
 
@@ -38,13 +38,49 @@ let validate_initial_and_finals states initial finals =
   else
     true
 
+let is_symbol_in_alphabet alphabet symbol = 
+  if not (List.mem symbol alphabet) then
+    raise (InvalidArgs ("Symbol '" ^ symbol ^ "' is not in the alphabet"))
 
-let validate_transitions (states : string list) (transitions : (string * transition list) list) : bool =
+let is_action_valid action =
+  if not (action = "RIGHT" || action = "LEFT") then
+    raise (InvalidArgs ("Invalid action '" ^ action ^ "'. Must be 'RIGHT' or 'LEFT'"))
+
+let validate_transition_properties (machine : machine) (rule : transition) : unit =
+  is_symbol_in_alphabet machine.alphabet rule.read;
+  is_symbol_in_alphabet machine.alphabet rule.write;
+  is_action_valid rule.action
+
+let are_transition_states_valid (states : string list) (from_state : string) (rules : transition list) : unit =
   let in_states s = List.mem s states in
-  List.for_all (fun (from_state, rules) ->
-    in_states from_state &&
-    List.for_all (fun rule -> in_states rule.to_state) rules
-  ) transitions
+  if not (in_states from_state) then
+    raise (InvalidArgs ("State '" ^ from_state ^ "' is not in the list of valid states"));
+  List.iter (fun rule -> 
+    if not (in_states rule.to_state) then
+      raise (InvalidArgs ("Target state '" ^ rule.to_state ^ "' is not in the list of valid states"))
+  ) rules
+
+let are_read_symbols_unique (from_state : string) (rules : transition list) : unit =
+  let read_symbols = List.map (fun rule -> rule.read) rules in
+  let rec find_duplicate seen = function
+    | [] -> ()
+    | x :: xs -> 
+        if List.mem x seen then
+          raise (InvalidArgs ("Duplicate 'read' symbol '" ^ x ^ "' found in state '" ^ from_state ^ "'"))
+        else
+          find_duplicate (x :: seen) xs
+  in
+  find_duplicate [] read_symbols
+
+let validate_transitions (machine : machine) : bool =
+  List.iter (fun (from_state, rules) ->
+    are_transition_states_valid machine.states from_state rules;
+    are_read_symbols_unique from_state rules;
+    List.iter (fun rule -> 
+      validate_transition_properties machine rule
+    ) rules
+  ) machine.transitions;
+  true
 
 
 let validate_transition_coverage states finals transitions =
@@ -55,7 +91,7 @@ let validate_transition_coverage states finals transitions =
   | [] -> true
   | lst -> false
 
-
+  
 let load_machine json_path =
   
   let json = Yojson.Basic.from_file json_path in
@@ -91,12 +127,11 @@ let validate_args json_path input =
     (* States must contains Initial and Finals *)
     if not (validate_initial_and_finals machine.states machine.initial machine.finals) then raise (InvalidArgs "The initial and finals states must be part of the states");
     (* To_state exists *)
-    if not (validate_transitions machine.states machine.transitions) then raise (InvalidArgs "All to_state in transitions must exist");
+    if not (validate_transitions machine) then raise (InvalidArgs "All to_state in transitions must exist");
     (* All States (except finals) have a transition rule *)
-    if not (validate_transition_coverage machine.states machine.finals machine.transitions) then raise (InvalidArgs "All states must have a transition");
-    
+    if not (validate_transition_coverage machine.states machine.finals machine.transitions) then raise (InvalidArgs "All states must have a transition");    
     (* Blank is part of the input *)
-    if String.contains input machine.blank.[0] then raise (InvalidArgs "The input must not contains the blank sign");
+    if String.contains input machine.blank.[0] then raise (InvalidArgs "The input must not contain the blank sign");
     machine
 
   with
@@ -112,11 +147,11 @@ let validate_params args =
     if Array.length args = 2 && (args.(1) = "-b" || args.(1) = "--benchmark") then
       raise OptionBenchmark;
     if Array.length args <> 3 then
-      raise (InvalidParams "")
+      raise (InvalidArgs "")
     else
       let param1 = args.(1) in
       let param2 = args.(2) in
       if param1 = "" || param2 = "" then
-        raise (InvalidParams "Parameters must not be empty")
+        raise (InvalidArgs "Parameters must not be empty")
       else
         validate_args args.(1) args.(2)
