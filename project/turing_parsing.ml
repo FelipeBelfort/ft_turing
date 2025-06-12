@@ -137,7 +137,8 @@ let validate_args json_path input =
   with
   | InvalidArgs msg -> raise (InvalidArgs msg);
     (* All fields exist or is a valid json *)
-  | _ -> raise (InvalidArgs "The machine has to be in a json format with all the correct fields")
+  (* | _ -> raise (InvalidArgs "The machine has to be in a json format with all the correct fields") *)
+  |  _ -> raise (InvalidArgs ("The file '" ^ json_path ^ "' is not in correct JSON format, or could not be opened"))
 
 
 let validate_params args =
